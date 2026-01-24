@@ -1,0 +1,8 @@
+EXPORTS
+init
+cleanup
+send_angle_control
+get_configuration
+control_sentry_init
+control_sentry_set_app_info
+control_sentry_shutdown
