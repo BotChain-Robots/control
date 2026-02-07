@@ -9,8 +9,8 @@
 
 namespace Flatbuffers {
 struct SerializedMessage {
-    void *data;
-    size_t size;
+  void *data;
+  size_t size;
 };
 } // namespace Flatbuffers
 

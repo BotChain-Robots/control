@@ -20,182 +20,192 @@ struct TopologyMessage;
 struct TopologyMessageBuilder;
 
 enum ConnectionType : int8_t {
-    ConnectionType_DIRECT = 0,
-    ConnectionType_HOP = 1,
-    ConnectionType_MIN = ConnectionType_DIRECT,
-    ConnectionType_MAX = ConnectionType_HOP
+  ConnectionType_DIRECT = 0,
+  ConnectionType_HOP = 1,
+  ConnectionType_MIN = ConnectionType_DIRECT,
+  ConnectionType_MAX = ConnectionType_HOP
 };
 
 inline const ConnectionType (&EnumValuesConnectionType())[2] {
-    static const ConnectionType values[] = {ConnectionType_DIRECT, ConnectionType_HOP};
-    return values;
+  static const ConnectionType values[] = {ConnectionType_DIRECT,
+                                          ConnectionType_HOP};
+  return values;
 }
 
 inline const char *const *EnumNamesConnectionType() {
-    static const char *const names[3] = {"DIRECT", "HOP", nullptr};
-    return names;
+  static const char *const names[3] = {"DIRECT", "HOP", nullptr};
+  return names;
 }
 
 inline const char *EnumNameConnectionType(ConnectionType e) {
-    if (::flatbuffers::IsOutRange(e, ConnectionType_DIRECT, ConnectionType_HOP))
-        return "";
-    const size_t index = static_cast<size_t>(e);
-    return EnumNamesConnectionType()[index];
+  if (::flatbuffers::IsOutRange(e, ConnectionType_DIRECT, ConnectionType_HOP))
+    return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesConnectionType()[index];
 }
 
 struct TopologyMessage FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-    typedef TopologyMessageBuilder Builder;
-    enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-        VT_MODULE_ID = 4,
-        VT_MODULE_TYPE = 6,
-        VT_NUM_CHANNELS = 8,
-        VT_CHANNEL_TO_MODULE = 10,
-        VT_CHANNEL_TO_ORIENTATION = 12,
-        VT_CONNECTION = 14,
-        VT_LEADER = 16,
-        VT_FIRMWARE = 18
-    };
-    uint8_t module_id() const {
-        return GetField<uint8_t>(VT_MODULE_ID, 0);
-    }
-    ModuleType module_type() const {
-        return static_cast<ModuleType>(GetField<int8_t>(VT_MODULE_TYPE, 0));
-    }
-    uint8_t num_channels() const {
-        return GetField<uint8_t>(VT_NUM_CHANNELS, 0);
-    }
-    const ::flatbuffers::Vector<uint8_t> *channel_to_module() const {
-        return GetPointer<const ::flatbuffers::Vector<uint8_t> *>(VT_CHANNEL_TO_MODULE);
-    }
-    const ::flatbuffers::Vector<int8_t> *channel_to_orientation() const {
-        return GetPointer<const ::flatbuffers::Vector<int8_t> *>(VT_CHANNEL_TO_ORIENTATION);
-    }
-    Messaging::ConnectionType connection() const {
-        return static_cast<Messaging::ConnectionType>(GetField<int8_t>(VT_CONNECTION, 0));
-    }
-    uint8_t leader() const {
-        return GetField<uint8_t>(VT_LEADER, 0);
-    }
-    const ::flatbuffers::String *firmware() const {
-        return GetPointer<const ::flatbuffers::String *>(VT_FIRMWARE);
-    }
-    bool Verify(::flatbuffers::Verifier &verifier) const {
-        return VerifyTableStart(verifier) && VerifyField<uint8_t>(verifier, VT_MODULE_ID, 1) &&
-               VerifyField<int8_t>(verifier, VT_MODULE_TYPE, 1) &&
-               VerifyField<uint8_t>(verifier, VT_NUM_CHANNELS, 1) &&
-               VerifyOffset(verifier, VT_CHANNEL_TO_MODULE) &&
-               verifier.VerifyVector(channel_to_module()) &&
-               VerifyOffset(verifier, VT_CHANNEL_TO_ORIENTATION) &&
-               verifier.VerifyVector(channel_to_orientation()) &&
-               VerifyField<int8_t>(verifier, VT_CONNECTION, 1) &&
-               VerifyField<uint8_t>(verifier, VT_LEADER, 1) &&
-               VerifyOffset(verifier, VT_FIRMWARE) && verifier.VerifyString(firmware()) &&
-               verifier.EndTable();
-    }
+  typedef TopologyMessageBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_MODULE_ID = 4,
+    VT_MODULE_TYPE = 6,
+    VT_NUM_CHANNELS = 8,
+    VT_CHANNEL_TO_MODULE = 10,
+    VT_CHANNEL_TO_ORIENTATION = 12,
+    VT_CONNECTION = 14,
+    VT_LEADER = 16,
+    VT_FIRMWARE = 18
+  };
+  uint8_t module_id() const { return GetField<uint8_t>(VT_MODULE_ID, 0); }
+  ModuleType module_type() const {
+    return static_cast<ModuleType>(GetField<int8_t>(VT_MODULE_TYPE, 0));
+  }
+  uint8_t num_channels() const { return GetField<uint8_t>(VT_NUM_CHANNELS, 0); }
+  const ::flatbuffers::Vector<uint8_t> *channel_to_module() const {
+    return GetPointer<const ::flatbuffers::Vector<uint8_t> *>(
+        VT_CHANNEL_TO_MODULE);
+  }
+  const ::flatbuffers::Vector<int8_t> *channel_to_orientation() const {
+    return GetPointer<const ::flatbuffers::Vector<int8_t> *>(
+        VT_CHANNEL_TO_ORIENTATION);
+  }
+  Messaging::ConnectionType connection() const {
+    return static_cast<Messaging::ConnectionType>(
+        GetField<int8_t>(VT_CONNECTION, 0));
+  }
+  uint8_t leader() const { return GetField<uint8_t>(VT_LEADER, 0); }
+  const ::flatbuffers::String *firmware() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_FIRMWARE);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_MODULE_ID, 1) &&
+           VerifyField<int8_t>(verifier, VT_MODULE_TYPE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_NUM_CHANNELS, 1) &&
+           VerifyOffset(verifier, VT_CHANNEL_TO_MODULE) &&
+           verifier.VerifyVector(channel_to_module()) &&
+           VerifyOffset(verifier, VT_CHANNEL_TO_ORIENTATION) &&
+           verifier.VerifyVector(channel_to_orientation()) &&
+           VerifyField<int8_t>(verifier, VT_CONNECTION, 1) &&
+           VerifyField<uint8_t>(verifier, VT_LEADER, 1) &&
+           VerifyOffset(verifier, VT_FIRMWARE) &&
+           verifier.VerifyString(firmware()) && verifier.EndTable();
+  }
 };
 
 struct TopologyMessageBuilder {
-    typedef TopologyMessage Table;
-    ::flatbuffers::FlatBufferBuilder &fbb_;
-    ::flatbuffers::uoffset_t start_;
-    void add_module_id(uint8_t module_id) {
-        fbb_.AddElement<uint8_t>(TopologyMessage::VT_MODULE_ID, module_id, 0);
-    }
-    void add_module_type(ModuleType module_type) {
-        fbb_.AddElement<int8_t>(TopologyMessage::VT_MODULE_TYPE, static_cast<int8_t>(module_type),
-                                0);
-    }
-    void add_num_channels(uint8_t num_channels) {
-        fbb_.AddElement<uint8_t>(TopologyMessage::VT_NUM_CHANNELS, num_channels, 0);
-    }
-    void
-    add_channel_to_module(::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> channel_to_module) {
-        fbb_.AddOffset(TopologyMessage::VT_CHANNEL_TO_MODULE, channel_to_module);
-    }
-    void add_channel_to_orientation(
-        ::flatbuffers::Offset<::flatbuffers::Vector<int8_t>> channel_to_orientation) {
-        fbb_.AddOffset(TopologyMessage::VT_CHANNEL_TO_ORIENTATION, channel_to_orientation);
-    }
-    void add_connection(Messaging::ConnectionType connection) {
-        fbb_.AddElement<int8_t>(TopologyMessage::VT_CONNECTION, static_cast<int8_t>(connection), 0);
-    }
-    void add_leader(uint8_t leader) {
-        fbb_.AddElement<uint8_t>(TopologyMessage::VT_LEADER, leader, 0);
-    }
-    void add_firmware(::flatbuffers::Offset<::flatbuffers::String> firmware) {
-        fbb_.AddOffset(TopologyMessage::VT_FIRMWARE, firmware);
-    }
-    explicit TopologyMessageBuilder(::flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
-        start_ = fbb_.StartTable();
-    }
-    ::flatbuffers::Offset<TopologyMessage> Finish() {
-        const auto end = fbb_.EndTable(start_);
-        auto o = ::flatbuffers::Offset<TopologyMessage>(end);
-        return o;
-    }
+  typedef TopologyMessage Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_module_id(uint8_t module_id) {
+    fbb_.AddElement<uint8_t>(TopologyMessage::VT_MODULE_ID, module_id, 0);
+  }
+  void add_module_type(ModuleType module_type) {
+    fbb_.AddElement<int8_t>(TopologyMessage::VT_MODULE_TYPE,
+                            static_cast<int8_t>(module_type), 0);
+  }
+  void add_num_channels(uint8_t num_channels) {
+    fbb_.AddElement<uint8_t>(TopologyMessage::VT_NUM_CHANNELS, num_channels, 0);
+  }
+  void add_channel_to_module(
+      ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> channel_to_module) {
+    fbb_.AddOffset(TopologyMessage::VT_CHANNEL_TO_MODULE, channel_to_module);
+  }
+  void add_channel_to_orientation(
+      ::flatbuffers::Offset<::flatbuffers::Vector<int8_t>>
+          channel_to_orientation) {
+    fbb_.AddOffset(TopologyMessage::VT_CHANNEL_TO_ORIENTATION,
+                   channel_to_orientation);
+  }
+  void add_connection(Messaging::ConnectionType connection) {
+    fbb_.AddElement<int8_t>(TopologyMessage::VT_CONNECTION,
+                            static_cast<int8_t>(connection), 0);
+  }
+  void add_leader(uint8_t leader) {
+    fbb_.AddElement<uint8_t>(TopologyMessage::VT_LEADER, leader, 0);
+  }
+  void add_firmware(::flatbuffers::Offset<::flatbuffers::String> firmware) {
+    fbb_.AddOffset(TopologyMessage::VT_FIRMWARE, firmware);
+  }
+  explicit TopologyMessageBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+      : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<TopologyMessage> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<TopologyMessage>(end);
+    return o;
+  }
 };
 
 inline ::flatbuffers::Offset<TopologyMessage> CreateTopologyMessage(
     ::flatbuffers::FlatBufferBuilder &_fbb, uint8_t module_id = 0,
     ModuleType module_type = ModuleType_SPLITTER, uint8_t num_channels = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> channel_to_module = 0,
-    ::flatbuffers::Offset<::flatbuffers::Vector<int8_t>> channel_to_orientation = 0,
-    Messaging::ConnectionType connection = Messaging::ConnectionType_DIRECT, uint8_t leader = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int8_t>>
+        channel_to_orientation = 0,
+    Messaging::ConnectionType connection = Messaging::ConnectionType_DIRECT,
+    uint8_t leader = 0,
     ::flatbuffers::Offset<::flatbuffers::String> firmware = 0) {
-    TopologyMessageBuilder builder_(_fbb);
-    builder_.add_firmware(firmware);
-    builder_.add_channel_to_orientation(channel_to_orientation);
-    builder_.add_channel_to_module(channel_to_module);
-    builder_.add_leader(leader);
-    builder_.add_connection(connection);
-    builder_.add_num_channels(num_channels);
-    builder_.add_module_type(module_type);
-    builder_.add_module_id(module_id);
-    return builder_.Finish();
+  TopologyMessageBuilder builder_(_fbb);
+  builder_.add_firmware(firmware);
+  builder_.add_channel_to_orientation(channel_to_orientation);
+  builder_.add_channel_to_module(channel_to_module);
+  builder_.add_leader(leader);
+  builder_.add_connection(connection);
+  builder_.add_num_channels(num_channels);
+  builder_.add_module_type(module_type);
+  builder_.add_module_id(module_id);
+  return builder_.Finish();
 }
 
-inline ::flatbuffers::Offset<TopologyMessage>
-CreateTopologyMessageDirect(::flatbuffers::FlatBufferBuilder &_fbb, uint8_t module_id = 0,
-                            ModuleType module_type = ModuleType_SPLITTER, uint8_t num_channels = 0,
-                            const std::vector<uint8_t> *channel_to_module = nullptr,
-                            const std::vector<int8_t> *channel_to_orientation = nullptr,
-                            Messaging::ConnectionType connection = Messaging::ConnectionType_DIRECT,
-                            uint8_t leader = 0, const char *firmware = nullptr) {
-    auto channel_to_module__ =
-        channel_to_module ? _fbb.CreateVector<uint8_t>(*channel_to_module) : 0;
-    auto channel_to_orientation__ =
-        channel_to_orientation ? _fbb.CreateVector<int8_t>(*channel_to_orientation) : 0;
-    auto firmware__ = firmware ? _fbb.CreateString(firmware) : 0;
-    return Messaging::CreateTopologyMessage(_fbb, module_id, module_type, num_channels,
-                                            channel_to_module__, channel_to_orientation__,
-                                            connection, leader, firmware__);
+inline ::flatbuffers::Offset<TopologyMessage> CreateTopologyMessageDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb, uint8_t module_id = 0,
+    ModuleType module_type = ModuleType_SPLITTER, uint8_t num_channels = 0,
+    const std::vector<uint8_t> *channel_to_module = nullptr,
+    const std::vector<int8_t> *channel_to_orientation = nullptr,
+    Messaging::ConnectionType connection = Messaging::ConnectionType_DIRECT,
+    uint8_t leader = 0, const char *firmware = nullptr) {
+  auto channel_to_module__ =
+      channel_to_module ? _fbb.CreateVector<uint8_t>(*channel_to_module) : 0;
+  auto channel_to_orientation__ =
+      channel_to_orientation
+          ? _fbb.CreateVector<int8_t>(*channel_to_orientation)
+          : 0;
+  auto firmware__ = firmware ? _fbb.CreateString(firmware) : 0;
+  return Messaging::CreateTopologyMessage(
+      _fbb, module_id, module_type, num_channels, channel_to_module__,
+      channel_to_orientation__, connection, leader, firmware__);
 }
 
 inline const Messaging::TopologyMessage *GetTopologyMessage(const void *buf) {
-    return ::flatbuffers::GetRoot<Messaging::TopologyMessage>(buf);
+  return ::flatbuffers::GetRoot<Messaging::TopologyMessage>(buf);
 }
 
-inline const Messaging::TopologyMessage *GetSizePrefixedTopologyMessage(const void *buf) {
-    return ::flatbuffers::GetSizePrefixedRoot<Messaging::TopologyMessage>(buf);
+inline const Messaging::TopologyMessage *
+GetSizePrefixedTopologyMessage(const void *buf) {
+  return ::flatbuffers::GetSizePrefixedRoot<Messaging::TopologyMessage>(buf);
 }
 
 inline bool VerifyTopologyMessageBuffer(::flatbuffers::Verifier &verifier) {
-    return verifier.VerifyBuffer<Messaging::TopologyMessage>(nullptr);
+  return verifier.VerifyBuffer<Messaging::TopologyMessage>(nullptr);
 }
 
-inline bool VerifySizePrefixedTopologyMessageBuffer(::flatbuffers::Verifier &verifier) {
-    return verifier.VerifySizePrefixedBuffer<Messaging::TopologyMessage>(nullptr);
+inline bool
+VerifySizePrefixedTopologyMessageBuffer(::flatbuffers::Verifier &verifier) {
+  return verifier.VerifySizePrefixedBuffer<Messaging::TopologyMessage>(nullptr);
 }
 
-inline void FinishTopologyMessageBuffer(::flatbuffers::FlatBufferBuilder &fbb,
-                                        ::flatbuffers::Offset<Messaging::TopologyMessage> root) {
-    fbb.Finish(root);
+inline void FinishTopologyMessageBuffer(
+    ::flatbuffers::FlatBufferBuilder &fbb,
+    ::flatbuffers::Offset<Messaging::TopologyMessage> root) {
+  fbb.Finish(root);
 }
 
-inline void
-FinishSizePrefixedTopologyMessageBuffer(::flatbuffers::FlatBufferBuilder &fbb,
-                                        ::flatbuffers::Offset<Messaging::TopologyMessage> root) {
-    fbb.FinishSizePrefixed(root);
+inline void FinishSizePrefixedTopologyMessageBuffer(
+    ::flatbuffers::FlatBufferBuilder &fbb,
+    ::flatbuffers::Offset<Messaging::TopologyMessage> root) {
+  fbb.FinishSizePrefixed(root);
 }
 
 } // namespace Messaging

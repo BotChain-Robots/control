@@ -1,0 +1,9 @@
+[requires]
+libcontrol/1.0.0
+flatbuffers/24.12.23
+spdlog/1.16.0
+librpc/1.1.6
+
+[generators]
+CMakeDeps
+CMakeToolchain

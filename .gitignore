@@ -45,3 +45,7 @@
 /cmake-build-debug
 /.cache
 **/.DS_Store
+CMakeCache.txt
+/CMakeFiles
+/examples/display/build
+*.log
