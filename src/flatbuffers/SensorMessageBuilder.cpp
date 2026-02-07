@@ -3,8 +3,9 @@
 
 namespace Flatbuffers {
 
-const Messaging::SensorMessage *SensorMessageBuilder::parse_sensor_message(const uint8_t *buffer) {
-    return flatbuffers::GetRoot<Messaging::SensorMessage>(buffer);
+const Messaging::SensorMessage *
+SensorMessageBuilder::parse_sensor_message(const uint8_t *buffer) {
+  return flatbuffers::GetRoot<Messaging::SensorMessage>(buffer);
 }
 
 } // namespace Flatbuffers

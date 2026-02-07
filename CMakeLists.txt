@@ -39,10 +39,11 @@ endif()
 
 target_include_directories(c_control PUBLIC include)
 target_link_libraries(c_control
+    PUBLIC
+        spdlog::spdlog
     PRIVATE
         librpc::librpc
         Eigen3::Eigen
-        spdlog::spdlog
         sentry-native::sentry-native
         sentry-crashpad::sentry-crashpad
 )
@@ -63,10 +64,11 @@ add_library(control SHARED
 
 target_include_directories(control PUBLIC include)
 target_link_libraries(control
+    PUBLIC
+        spdlog::spdlog
     PRIVATE
         librpc::librpc
         Eigen3::Eigen
-        spdlog::spdlog
         sentry-native::sentry-native
         sentry-crashpad::sentry-crashpad
 )
