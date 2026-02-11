@@ -49,3 +49,4 @@ CMakeCache.txt
 /CMakeFiles
 /examples/display/build
 *.log
+/examples/rpc_call/build
