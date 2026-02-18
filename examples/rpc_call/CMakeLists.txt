@@ -9,7 +9,9 @@ find_package(libcontrol REQUIRED)
 find_package(spdlog REQUIRED)
 find_package(librpc REQUIRED)
 
-add_executable(RpcCallExample main.cpp)
+add_executable(RpcCallExample main.cpp flatbuffers/OTAPacketBuilder.cpp rpc/RemoteDebugging.cpp rpc/RemoteManagement.cpp)
+
+target_include_directories(RpcCallExample PUBLIC include)
 
 target_link_libraries(RpcCallExample
     PRIVATE

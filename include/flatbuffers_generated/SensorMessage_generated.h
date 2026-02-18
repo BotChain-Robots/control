@@ -27,316 +27,293 @@ struct SensorMessage;
 struct SensorMessageBuilder;
 
 enum SensorValue : uint8_t {
-  SensorValue_NONE = 0,
-  SensorValue_TargetAngle = 1,
-  SensorValue_CurrentAngle = 2,
-  SensorValue_CurrentText = 3,
-  SensorValue_MIN = SensorValue_NONE,
-  SensorValue_MAX = SensorValue_CurrentText
+    SensorValue_NONE = 0,
+    SensorValue_TargetAngle = 1,
+    SensorValue_CurrentAngle = 2,
+    SensorValue_CurrentText = 3,
+    SensorValue_MIN = SensorValue_NONE,
+    SensorValue_MAX = SensorValue_CurrentText
 };
 
 inline const SensorValue (&EnumValuesSensorValue())[4] {
-  static const SensorValue values[] = {
-      SensorValue_NONE, SensorValue_TargetAngle, SensorValue_CurrentAngle,
-      SensorValue_CurrentText};
-  return values;
+    static const SensorValue values[] = {SensorValue_NONE, SensorValue_TargetAngle,
+                                         SensorValue_CurrentAngle, SensorValue_CurrentText};
+    return values;
 }
 
 inline const char *const *EnumNamesSensorValue() {
-  static const char *const names[5] = {"NONE", "TargetAngle", "CurrentAngle",
-                                       "CurrentText", nullptr};
-  return names;
+    static const char *const names[5] = {"NONE", "TargetAngle", "CurrentAngle", "CurrentText",
+                                         nullptr};
+    return names;
 }
 
 inline const char *EnumNameSensorValue(SensorValue e) {
-  if (::flatbuffers::IsOutRange(e, SensorValue_NONE, SensorValue_CurrentText))
-    return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesSensorValue()[index];
+    if (::flatbuffers::IsOutRange(e, SensorValue_NONE, SensorValue_CurrentText))
+        return "";
+    const size_t index = static_cast<size_t>(e);
+    return EnumNamesSensorValue()[index];
 }
 
 template <typename T> struct SensorValueTraits {
-  static const SensorValue enum_value = SensorValue_NONE;
+    static const SensorValue enum_value = SensorValue_NONE;
 };
 
 template <> struct SensorValueTraits<Messaging::TargetAngle> {
-  static const SensorValue enum_value = SensorValue_TargetAngle;
+    static const SensorValue enum_value = SensorValue_TargetAngle;
 };
 
 template <> struct SensorValueTraits<Messaging::CurrentAngle> {
-  static const SensorValue enum_value = SensorValue_CurrentAngle;
+    static const SensorValue enum_value = SensorValue_CurrentAngle;
 };
 
 template <> struct SensorValueTraits<Messaging::CurrentText> {
-  static const SensorValue enum_value = SensorValue_CurrentText;
+    static const SensorValue enum_value = SensorValue_CurrentText;
 };
 
-bool VerifySensorValue(::flatbuffers::Verifier &verifier, const void *obj,
-                       SensorValue type);
-bool VerifySensorValueVector(
-    ::flatbuffers::Verifier &verifier,
-    const ::flatbuffers::Vector<::flatbuffers::Offset<void>> *values,
-    const ::flatbuffers::Vector<uint8_t> *types);
+bool VerifySensorValue(::flatbuffers::Verifier &verifier, const void *obj, SensorValue type);
+bool VerifySensorValueVector(::flatbuffers::Verifier &verifier,
+                             const ::flatbuffers::Vector<::flatbuffers::Offset<void>> *values,
+                             const ::flatbuffers::Vector<uint8_t> *types);
 
 struct TargetAngle FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef TargetAngleBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_VALUE = 4
-  };
-  int16_t value() const { return GetField<int16_t>(VT_VALUE, 0); }
-  bool Verify(::flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<int16_t>(verifier, VT_VALUE, 2) && verifier.EndTable();
-  }
+    typedef TargetAngleBuilder Builder;
+    enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE { VT_VALUE = 4 };
+    int16_t value() const {
+        return GetField<int16_t>(VT_VALUE, 0);
+    }
+    bool Verify(::flatbuffers::Verifier &verifier) const {
+        return VerifyTableStart(verifier) && VerifyField<int16_t>(verifier, VT_VALUE, 2) &&
+               verifier.EndTable();
+    }
 };
 
 struct TargetAngleBuilder {
-  typedef TargetAngle Table;
-  ::flatbuffers::FlatBufferBuilder &fbb_;
-  ::flatbuffers::uoffset_t start_;
-  void add_value(int16_t value) {
-    fbb_.AddElement<int16_t>(TargetAngle::VT_VALUE, value, 0);
-  }
-  explicit TargetAngleBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
-      : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  ::flatbuffers::Offset<TargetAngle> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<TargetAngle>(end);
-    return o;
-  }
+    typedef TargetAngle Table;
+    ::flatbuffers::FlatBufferBuilder &fbb_;
+    ::flatbuffers::uoffset_t start_;
+    void add_value(int16_t value) {
+        fbb_.AddElement<int16_t>(TargetAngle::VT_VALUE, value, 0);
+    }
+    explicit TargetAngleBuilder(::flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
+        start_ = fbb_.StartTable();
+    }
+    ::flatbuffers::Offset<TargetAngle> Finish() {
+        const auto end = fbb_.EndTable(start_);
+        auto o = ::flatbuffers::Offset<TargetAngle>(end);
+        return o;
+    }
 };
 
-inline ::flatbuffers::Offset<TargetAngle>
-CreateTargetAngle(::flatbuffers::FlatBufferBuilder &_fbb, int16_t value = 0) {
-  TargetAngleBuilder builder_(_fbb);
-  builder_.add_value(value);
-  return builder_.Finish();
+inline ::flatbuffers::Offset<TargetAngle> CreateTargetAngle(::flatbuffers::FlatBufferBuilder &_fbb,
+                                                            int16_t value = 0) {
+    TargetAngleBuilder builder_(_fbb);
+    builder_.add_value(value);
+    return builder_.Finish();
 }
 
 struct CurrentText FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef CurrentTextBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_VALUE = 4
-  };
-  const ::flatbuffers::String *value() const {
-    return GetPointer<const ::flatbuffers::String *>(VT_VALUE);
-  }
-  bool Verify(::flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_VALUE) &&
-           verifier.VerifyString(value()) && verifier.EndTable();
-  }
+    typedef CurrentTextBuilder Builder;
+    enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE { VT_VALUE = 4 };
+    const ::flatbuffers::String *value() const {
+        return GetPointer<const ::flatbuffers::String *>(VT_VALUE);
+    }
+    bool Verify(::flatbuffers::Verifier &verifier) const {
+        return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_VALUE) &&
+               verifier.VerifyString(value()) && verifier.EndTable();
+    }
 };
 
 struct CurrentTextBuilder {
-  typedef CurrentText Table;
-  ::flatbuffers::FlatBufferBuilder &fbb_;
-  ::flatbuffers::uoffset_t start_;
-  void add_value(::flatbuffers::Offset<::flatbuffers::String> value) {
-    fbb_.AddOffset(CurrentText::VT_VALUE, value);
-  }
-  explicit CurrentTextBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
-      : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  ::flatbuffers::Offset<CurrentText> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<CurrentText>(end);
-    return o;
-  }
+    typedef CurrentText Table;
+    ::flatbuffers::FlatBufferBuilder &fbb_;
+    ::flatbuffers::uoffset_t start_;
+    void add_value(::flatbuffers::Offset<::flatbuffers::String> value) {
+        fbb_.AddOffset(CurrentText::VT_VALUE, value);
+    }
+    explicit CurrentTextBuilder(::flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
+        start_ = fbb_.StartTable();
+    }
+    ::flatbuffers::Offset<CurrentText> Finish() {
+        const auto end = fbb_.EndTable(start_);
+        auto o = ::flatbuffers::Offset<CurrentText>(end);
+        return o;
+    }
 };
 
 inline ::flatbuffers::Offset<CurrentText>
 CreateCurrentText(::flatbuffers::FlatBufferBuilder &_fbb,
                   ::flatbuffers::Offset<::flatbuffers::String> value = 0) {
-  CurrentTextBuilder builder_(_fbb);
-  builder_.add_value(value);
-  return builder_.Finish();
+    CurrentTextBuilder builder_(_fbb);
+    builder_.add_value(value);
+    return builder_.Finish();
 }
 
 inline ::flatbuffers::Offset<CurrentText>
-CreateCurrentTextDirect(::flatbuffers::FlatBufferBuilder &_fbb,
-                        const char *value = nullptr) {
-  auto value__ = value ? _fbb.CreateString(value) : 0;
-  return Messaging::CreateCurrentText(_fbb, value__);
+CreateCurrentTextDirect(::flatbuffers::FlatBufferBuilder &_fbb, const char *value = nullptr) {
+    auto value__ = value ? _fbb.CreateString(value) : 0;
+    return Messaging::CreateCurrentText(_fbb, value__);
 }
 
 struct CurrentAngle FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef CurrentAngleBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_VALUE = 4
-  };
-  int16_t value() const { return GetField<int16_t>(VT_VALUE, 0); }
-  bool Verify(::flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<int16_t>(verifier, VT_VALUE, 2) && verifier.EndTable();
-  }
+    typedef CurrentAngleBuilder Builder;
+    enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE { VT_VALUE = 4 };
+    int16_t value() const {
+        return GetField<int16_t>(VT_VALUE, 0);
+    }
+    bool Verify(::flatbuffers::Verifier &verifier) const {
+        return VerifyTableStart(verifier) && VerifyField<int16_t>(verifier, VT_VALUE, 2) &&
+               verifier.EndTable();
+    }
 };
 
 struct CurrentAngleBuilder {
-  typedef CurrentAngle Table;
-  ::flatbuffers::FlatBufferBuilder &fbb_;
-  ::flatbuffers::uoffset_t start_;
-  void add_value(int16_t value) {
-    fbb_.AddElement<int16_t>(CurrentAngle::VT_VALUE, value, 0);
-  }
-  explicit CurrentAngleBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
-      : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  ::flatbuffers::Offset<CurrentAngle> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<CurrentAngle>(end);
-    return o;
-  }
+    typedef CurrentAngle Table;
+    ::flatbuffers::FlatBufferBuilder &fbb_;
+    ::flatbuffers::uoffset_t start_;
+    void add_value(int16_t value) {
+        fbb_.AddElement<int16_t>(CurrentAngle::VT_VALUE, value, 0);
+    }
+    explicit CurrentAngleBuilder(::flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
+        start_ = fbb_.StartTable();
+    }
+    ::flatbuffers::Offset<CurrentAngle> Finish() {
+        const auto end = fbb_.EndTable(start_);
+        auto o = ::flatbuffers::Offset<CurrentAngle>(end);
+        return o;
+    }
 };
 
 inline ::flatbuffers::Offset<CurrentAngle>
 CreateCurrentAngle(::flatbuffers::FlatBufferBuilder &_fbb, int16_t value = 0) {
-  CurrentAngleBuilder builder_(_fbb);
-  builder_.add_value(value);
-  return builder_.Finish();
+    CurrentAngleBuilder builder_(_fbb);
+    builder_.add_value(value);
+    return builder_.Finish();
 }
 
 struct SensorMessage FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef SensorMessageBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_VALUES_TYPE = 4,
-    VT_VALUES = 6
-  };
-  const ::flatbuffers::Vector<uint8_t> *values_type() const {
-    return GetPointer<const ::flatbuffers::Vector<uint8_t> *>(VT_VALUES_TYPE);
-  }
-  const ::flatbuffers::Vector<::flatbuffers::Offset<void>> *values() const {
-    return GetPointer<
-        const ::flatbuffers::Vector<::flatbuffers::Offset<void>> *>(VT_VALUES);
-  }
-  bool Verify(::flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_VALUES_TYPE) &&
-           verifier.VerifyVector(values_type()) &&
-           VerifyOffset(verifier, VT_VALUES) &&
-           verifier.VerifyVector(values()) &&
-           VerifySensorValueVector(verifier, values(), values_type()) &&
-           verifier.EndTable();
-  }
+    typedef SensorMessageBuilder Builder;
+    enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+        VT_VALUES_TYPE = 4,
+        VT_VALUES = 6
+    };
+    const ::flatbuffers::Vector<uint8_t> *values_type() const {
+        return GetPointer<const ::flatbuffers::Vector<uint8_t> *>(VT_VALUES_TYPE);
+    }
+    const ::flatbuffers::Vector<::flatbuffers::Offset<void>> *values() const {
+        return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<void>> *>(VT_VALUES);
+    }
+    bool Verify(::flatbuffers::Verifier &verifier) const {
+        return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_VALUES_TYPE) &&
+               verifier.VerifyVector(values_type()) && VerifyOffset(verifier, VT_VALUES) &&
+               verifier.VerifyVector(values()) &&
+               VerifySensorValueVector(verifier, values(), values_type()) && verifier.EndTable();
+    }
 };
 
 struct SensorMessageBuilder {
-  typedef SensorMessage Table;
-  ::flatbuffers::FlatBufferBuilder &fbb_;
-  ::flatbuffers::uoffset_t start_;
-  void add_values_type(
-      ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> values_type) {
-    fbb_.AddOffset(SensorMessage::VT_VALUES_TYPE, values_type);
-  }
-  void add_values(
-      ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<void>>>
-          values) {
-    fbb_.AddOffset(SensorMessage::VT_VALUES, values);
-  }
-  explicit SensorMessageBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
-      : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  ::flatbuffers::Offset<SensorMessage> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<SensorMessage>(end);
-    return o;
-  }
+    typedef SensorMessage Table;
+    ::flatbuffers::FlatBufferBuilder &fbb_;
+    ::flatbuffers::uoffset_t start_;
+    void add_values_type(::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> values_type) {
+        fbb_.AddOffset(SensorMessage::VT_VALUES_TYPE, values_type);
+    }
+    void
+    add_values(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<void>>> values) {
+        fbb_.AddOffset(SensorMessage::VT_VALUES, values);
+    }
+    explicit SensorMessageBuilder(::flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
+        start_ = fbb_.StartTable();
+    }
+    ::flatbuffers::Offset<SensorMessage> Finish() {
+        const auto end = fbb_.EndTable(start_);
+        auto o = ::flatbuffers::Offset<SensorMessage>(end);
+        return o;
+    }
 };
 
 inline ::flatbuffers::Offset<SensorMessage> CreateSensorMessage(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> values_type = 0,
-    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<void>>>
-        values = 0) {
-  SensorMessageBuilder builder_(_fbb);
-  builder_.add_values(values);
-  builder_.add_values_type(values_type);
-  return builder_.Finish();
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<void>>> values = 0) {
+    SensorMessageBuilder builder_(_fbb);
+    builder_.add_values(values);
+    builder_.add_values_type(values_type);
+    return builder_.Finish();
 }
 
-inline ::flatbuffers::Offset<SensorMessage> CreateSensorMessageDirect(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<uint8_t> *values_type = nullptr,
-    const std::vector<::flatbuffers::Offset<void>> *values = nullptr) {
-  auto values_type__ =
-      values_type ? _fbb.CreateVector<uint8_t>(*values_type) : 0;
-  auto values__ =
-      values ? _fbb.CreateVector<::flatbuffers::Offset<void>>(*values) : 0;
-  return Messaging::CreateSensorMessage(_fbb, values_type__, values__);
+inline ::flatbuffers::Offset<SensorMessage>
+CreateSensorMessageDirect(::flatbuffers::FlatBufferBuilder &_fbb,
+                          const std::vector<uint8_t> *values_type = nullptr,
+                          const std::vector<::flatbuffers::Offset<void>> *values = nullptr) {
+    auto values_type__ = values_type ? _fbb.CreateVector<uint8_t>(*values_type) : 0;
+    auto values__ = values ? _fbb.CreateVector<::flatbuffers::Offset<void>>(*values) : 0;
+    return Messaging::CreateSensorMessage(_fbb, values_type__, values__);
 }
 
-inline bool VerifySensorValue(::flatbuffers::Verifier &verifier,
-                              const void *obj, SensorValue type) {
-  switch (type) {
-  case SensorValue_NONE: {
-    return true;
-  }
-  case SensorValue_TargetAngle: {
-    auto ptr = reinterpret_cast<const Messaging::TargetAngle *>(obj);
-    return verifier.VerifyTable(ptr);
-  }
-  case SensorValue_CurrentAngle: {
-    auto ptr = reinterpret_cast<const Messaging::CurrentAngle *>(obj);
-    return verifier.VerifyTable(ptr);
-  }
-  case SensorValue_CurrentText: {
-    auto ptr = reinterpret_cast<const Messaging::CurrentText *>(obj);
-    return verifier.VerifyTable(ptr);
-  }
-  default:
-    return true;
-  }
-}
-
-inline bool VerifySensorValueVector(
-    ::flatbuffers::Verifier &verifier,
-    const ::flatbuffers::Vector<::flatbuffers::Offset<void>> *values,
-    const ::flatbuffers::Vector<uint8_t> *types) {
-  if (!values || !types)
-    return !values && !types;
-  if (values->size() != types->size())
-    return false;
-  for (::flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
-    if (!VerifySensorValue(verifier, values->Get(i),
-                           types->GetEnum<SensorValue>(i))) {
-      return false;
+inline bool VerifySensorValue(::flatbuffers::Verifier &verifier, const void *obj,
+                              SensorValue type) {
+    switch (type) {
+    case SensorValue_NONE: {
+        return true;
     }
-  }
-  return true;
-}
-
-inline const Messaging::SensorMessage *GetSensorMessage(const void *buf) {
-  return ::flatbuffers::GetRoot<Messaging::SensorMessage>(buf);
-}
-
-inline const Messaging::SensorMessage *
-GetSizePrefixedSensorMessage(const void *buf) {
-  return ::flatbuffers::GetSizePrefixedRoot<Messaging::SensorMessage>(buf);
-}
-
-inline bool VerifySensorMessageBuffer(::flatbuffers::Verifier &verifier) {
-  return verifier.VerifyBuffer<Messaging::SensorMessage>(nullptr);
+    case SensorValue_TargetAngle: {
+        auto ptr = reinterpret_cast<const Messaging::TargetAngle *>(obj);
+        return verifier.VerifyTable(ptr);
+    }
+    case SensorValue_CurrentAngle: {
+        auto ptr = reinterpret_cast<const Messaging::CurrentAngle *>(obj);
+        return verifier.VerifyTable(ptr);
+    }
+    case SensorValue_CurrentText: {
+        auto ptr = reinterpret_cast<const Messaging::CurrentText *>(obj);
+        return verifier.VerifyTable(ptr);
+    }
+    default:
+        return true;
+    }
 }
 
 inline bool
-VerifySizePrefixedSensorMessageBuffer(::flatbuffers::Verifier &verifier) {
-  return verifier.VerifySizePrefixedBuffer<Messaging::SensorMessage>(nullptr);
+VerifySensorValueVector(::flatbuffers::Verifier &verifier,
+                        const ::flatbuffers::Vector<::flatbuffers::Offset<void>> *values,
+                        const ::flatbuffers::Vector<uint8_t> *types) {
+    if (!values || !types)
+        return !values && !types;
+    if (values->size() != types->size())
+        return false;
+    for (::flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
+        if (!VerifySensorValue(verifier, values->Get(i), types->GetEnum<SensorValue>(i))) {
+            return false;
+        }
+    }
+    return true;
 }
 
-inline void FinishSensorMessageBuffer(
-    ::flatbuffers::FlatBufferBuilder &fbb,
-    ::flatbuffers::Offset<Messaging::SensorMessage> root) {
-  fbb.Finish(root);
+inline const Messaging::SensorMessage *GetSensorMessage(const void *buf) {
+    return ::flatbuffers::GetRoot<Messaging::SensorMessage>(buf);
 }
 
-inline void FinishSizePrefixedSensorMessageBuffer(
-    ::flatbuffers::FlatBufferBuilder &fbb,
-    ::flatbuffers::Offset<Messaging::SensorMessage> root) {
-  fbb.FinishSizePrefixed(root);
+inline const Messaging::SensorMessage *GetSizePrefixedSensorMessage(const void *buf) {
+    return ::flatbuffers::GetSizePrefixedRoot<Messaging::SensorMessage>(buf);
+}
+
+inline bool VerifySensorMessageBuffer(::flatbuffers::Verifier &verifier) {
+    return verifier.VerifyBuffer<Messaging::SensorMessage>(nullptr);
+}
+
+inline bool VerifySizePrefixedSensorMessageBuffer(::flatbuffers::Verifier &verifier) {
+    return verifier.VerifySizePrefixedBuffer<Messaging::SensorMessage>(nullptr);
+}
+
+inline void FinishSensorMessageBuffer(::flatbuffers::FlatBufferBuilder &fbb,
+                                      ::flatbuffers::Offset<Messaging::SensorMessage> root) {
+    fbb.Finish(root);
+}
+
+inline void
+FinishSizePrefixedSensorMessageBuffer(::flatbuffers::FlatBufferBuilder &fbb,
+                                      ::flatbuffers::Offset<Messaging::SensorMessage> root) {
+    fbb.FinishSizePrefixed(root);
 }
 
 } // namespace Messaging

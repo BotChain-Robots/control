@@ -5,8 +5,6 @@
 #ifndef SERIALIZEDMESSAGE_H
 #define SERIALIZEDMESSAGE_H
 
-#include <stddef.h>
-
 namespace Flatbuffers {
 struct SerializedMessage {
     void *data;

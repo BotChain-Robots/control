@@ -13,52 +13,51 @@
 namespace Flatbuffers {
 
 struct target_angle {
-  int16_t angle;
+    int16_t angle;
 };
 
 struct current_angle {
-  int16_t angle;
+    int16_t angle;
 };
 
 struct current_text {
-  std::string text;
+    std::string text;
 };
 
 typedef std::variant<target_angle, current_angle, current_text> sensor_value;
 
 class SensorMessageBuilder {
-public:
-  SensorMessageBuilder() : builder_(1024) {}
+  public:
+    SensorMessageBuilder() : builder_(1024) {
+    }
 
-  static const Messaging::SensorMessage *
-  parse_sensor_message(const std::uint8_t *buffer);
+    static const Messaging::SensorMessage *parse_sensor_message(const std::uint8_t *buffer);
 
-  template <typename T>
-  static std::optional<sensor_value>
-  build_sensor_value(Messaging::SensorValue type, T value) {
-    switch (type) {
-    case Messaging::SensorValue_TargetAngle: {
-      const Messaging::TargetAngle *target =
-          static_cast<const Messaging::TargetAngle *>(value);
-      return target_angle{target->value()};
+    template <typename T>
+    static std::optional<sensor_value> build_sensor_value(Messaging::SensorValue type, T value) {
+        switch (type) {
+        case Messaging::SensorValue_TargetAngle: {
+            const Messaging::TargetAngle *target =
+                static_cast<const Messaging::TargetAngle *>(value);
+            return target_angle{target->value()};
+        }
+        case Messaging::SensorValue_CurrentAngle: {
+            const Messaging::CurrentAngle *current =
+                static_cast<const Messaging::CurrentAngle *>(value);
+            return current_angle{current->value()};
+        }
+        case Messaging::SensorValue_CurrentText: {
+            const Messaging::CurrentText *current =
+                static_cast<const Messaging::CurrentText *>(value);
+            return current_text{current->value()->str()};
+        }
+        default:
+            return std::nullopt;
+        }
     }
-    case Messaging::SensorValue_CurrentAngle: {
-      const Messaging::CurrentAngle *current =
-          static_cast<const Messaging::CurrentAngle *>(value);
-      return current_angle{current->value()};
-    }
-    case Messaging::SensorValue_CurrentText: {
-      const Messaging::CurrentText *current =
-          static_cast<const Messaging::CurrentText *>(value);
-      return current_text{current->value()->str()};
-    }
-    default:
-      return std::nullopt;
-    }
-  }
 
-private:
-  flatbuffers::FlatBufferBuilder builder_;
+  private:
+    flatbuffers::FlatBufferBuilder builder_;
 };
 } // namespace Flatbuffers
 

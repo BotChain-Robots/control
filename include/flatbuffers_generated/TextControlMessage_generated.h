@@ -17,84 +17,76 @@ namespace Messaging {
 struct TextControlMessage;
 struct TextControlMessageBuilder;
 
-struct TextControlMessage FLATBUFFERS_FINAL_CLASS
-    : private ::flatbuffers::Table {
-  typedef TextControlMessageBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_MESSAGE = 4
-  };
-  const ::flatbuffers::String *message() const {
-    return GetPointer<const ::flatbuffers::String *>(VT_MESSAGE);
-  }
-  bool Verify(::flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_MESSAGE) &&
-           verifier.VerifyString(message()) && verifier.EndTable();
-  }
+struct TextControlMessage FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+    typedef TextControlMessageBuilder Builder;
+    enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE { VT_MESSAGE = 4 };
+    const ::flatbuffers::String *message() const {
+        return GetPointer<const ::flatbuffers::String *>(VT_MESSAGE);
+    }
+    bool Verify(::flatbuffers::Verifier &verifier) const {
+        return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_MESSAGE) &&
+               verifier.VerifyString(message()) && verifier.EndTable();
+    }
 };
 
 struct TextControlMessageBuilder {
-  typedef TextControlMessage Table;
-  ::flatbuffers::FlatBufferBuilder &fbb_;
-  ::flatbuffers::uoffset_t start_;
-  void add_message(::flatbuffers::Offset<::flatbuffers::String> message) {
-    fbb_.AddOffset(TextControlMessage::VT_MESSAGE, message);
-  }
-  explicit TextControlMessageBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
-      : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  ::flatbuffers::Offset<TextControlMessage> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<TextControlMessage>(end);
-    return o;
-  }
+    typedef TextControlMessage Table;
+    ::flatbuffers::FlatBufferBuilder &fbb_;
+    ::flatbuffers::uoffset_t start_;
+    void add_message(::flatbuffers::Offset<::flatbuffers::String> message) {
+        fbb_.AddOffset(TextControlMessage::VT_MESSAGE, message);
+    }
+    explicit TextControlMessageBuilder(::flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb) {
+        start_ = fbb_.StartTable();
+    }
+    ::flatbuffers::Offset<TextControlMessage> Finish() {
+        const auto end = fbb_.EndTable(start_);
+        auto o = ::flatbuffers::Offset<TextControlMessage>(end);
+        return o;
+    }
 };
 
-inline ::flatbuffers::Offset<TextControlMessage> CreateTextControlMessage(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<::flatbuffers::String> message = 0) {
-  TextControlMessageBuilder builder_(_fbb);
-  builder_.add_message(message);
-  return builder_.Finish();
+inline ::flatbuffers::Offset<TextControlMessage>
+CreateTextControlMessage(::flatbuffers::FlatBufferBuilder &_fbb,
+                         ::flatbuffers::Offset<::flatbuffers::String> message = 0) {
+    TextControlMessageBuilder builder_(_fbb);
+    builder_.add_message(message);
+    return builder_.Finish();
 }
 
 inline ::flatbuffers::Offset<TextControlMessage>
 CreateTextControlMessageDirect(::flatbuffers::FlatBufferBuilder &_fbb,
                                const char *message = nullptr) {
-  auto message__ = message ? _fbb.CreateString(message) : 0;
-  return Messaging::CreateTextControlMessage(_fbb, message__);
+    auto message__ = message ? _fbb.CreateString(message) : 0;
+    return Messaging::CreateTextControlMessage(_fbb, message__);
 }
 
-inline const Messaging::TextControlMessage *
-GetTextControlMessage(const void *buf) {
-  return ::flatbuffers::GetRoot<Messaging::TextControlMessage>(buf);
+inline const Messaging::TextControlMessage *GetTextControlMessage(const void *buf) {
+    return ::flatbuffers::GetRoot<Messaging::TextControlMessage>(buf);
 }
 
-inline const Messaging::TextControlMessage *
-GetSizePrefixedTextControlMessage(const void *buf) {
-  return ::flatbuffers::GetSizePrefixedRoot<Messaging::TextControlMessage>(buf);
+inline const Messaging::TextControlMessage *GetSizePrefixedTextControlMessage(const void *buf) {
+    return ::flatbuffers::GetSizePrefixedRoot<Messaging::TextControlMessage>(buf);
 }
 
 inline bool VerifyTextControlMessageBuffer(::flatbuffers::Verifier &verifier) {
-  return verifier.VerifyBuffer<Messaging::TextControlMessage>(nullptr);
+    return verifier.VerifyBuffer<Messaging::TextControlMessage>(nullptr);
 }
 
-inline bool
-VerifySizePrefixedTextControlMessageBuffer(::flatbuffers::Verifier &verifier) {
-  return verifier.VerifySizePrefixedBuffer<Messaging::TextControlMessage>(
-      nullptr);
+inline bool VerifySizePrefixedTextControlMessageBuffer(::flatbuffers::Verifier &verifier) {
+    return verifier.VerifySizePrefixedBuffer<Messaging::TextControlMessage>(nullptr);
 }
 
-inline void FinishTextControlMessageBuffer(
-    ::flatbuffers::FlatBufferBuilder &fbb,
-    ::flatbuffers::Offset<Messaging::TextControlMessage> root) {
-  fbb.Finish(root);
+inline void
+FinishTextControlMessageBuffer(::flatbuffers::FlatBufferBuilder &fbb,
+                               ::flatbuffers::Offset<Messaging::TextControlMessage> root) {
+    fbb.Finish(root);
 }
 
 inline void FinishSizePrefixedTextControlMessageBuffer(
     ::flatbuffers::FlatBufferBuilder &fbb,
     ::flatbuffers::Offset<Messaging::TextControlMessage> root) {
-  fbb.FinishSizePrefixed(root);
+    fbb.FinishSizePrefixed(root);
 }
 
 } // namespace Messaging

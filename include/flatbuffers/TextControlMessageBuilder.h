@@ -14,13 +14,14 @@
 
 namespace Flatbuffers {
 class TextControlMessageBuilder {
-public:
-  TextControlMessageBuilder() : builder_(256) {}
+  public:
+    TextControlMessageBuilder() : builder_(256) {
+    }
 
-  SerializedMessage build_text_control_message(std::string &t);
+    SerializedMessage build_text_control_message(std::string &t);
 
-private:
-  flatbuffers::FlatBufferBuilder builder_;
+  private:
+    flatbuffers::FlatBufferBuilder builder_;
 };
 } // namespace Flatbuffers
 

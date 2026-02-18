@@ -12,32 +12,33 @@
 
 namespace Flatbuffers {
 struct ModuleInstance {
-  uint8_t id;
-  ModuleType type;
-  int angle;
+    uint8_t id;
+    ModuleType type;
+    int angle;
 };
 
 struct ModuleConnectionInstance {
-  uint8_t from_module_id;
-  uint8_t to_module_id;
-  uint8_t from_socket;
-  uint8_t to_socket;
-  Orientation orientation;
+    uint8_t from_module_id;
+    uint8_t to_module_id;
+    uint8_t from_socket;
+    uint8_t to_socket;
+    Orientation orientation;
 };
 
 class RobotConfigurationBuilder {
-public:
-  RobotConfigurationBuilder() : builder_(1024) {}
+  public:
+    RobotConfigurationBuilder() : builder_(1024) {
+    }
 
-  SerializedMessage build_robot_configuration(
-      const std::vector<ModuleInstance> &modules,
-      const std::vector<ModuleConnectionInstance> &connections);
+    SerializedMessage
+    build_robot_configuration(const std::vector<ModuleInstance> &modules,
+                              const std::vector<ModuleConnectionInstance> &connections);
 
-  static const Frontend::RobotConfiguration *
-  parse_robot_configuration(const std::uint8_t *buffer);
+    static const Frontend::RobotConfiguration *
+    parse_robot_configuration(const std::uint8_t *buffer);
 
-private:
-  flatbuffers::FlatBufferBuilder builder_;
+  private:
+    flatbuffers::FlatBufferBuilder builder_;
 };
 } // namespace Flatbuffers
 
