@@ -58,9 +58,17 @@ install(TARGETS c_control
 )
 
 # C++ API Library
-add_library(control SHARED
+if(WIN32)
+    add_library(control SHARED
+            ${COMMON_SOURCES}
+    )
+    target_compile_definitions(control PRIVATE CONTROL_EXPORTS)
+    set_target_properties(control PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
+else()
+    add_library(control SHARED
         ${COMMON_SOURCES}
-)
+    )
+endif()
 
 target_include_directories(control PUBLIC include)
 target_link_libraries(control

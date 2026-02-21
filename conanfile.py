@@ -7,13 +7,13 @@ from conan.tools.files import copy
 
 class MyLibraryConan(ConanFile):
     name = "libcontrol"
-    version = "1.0.0"
+    version = "1.0.2"
 
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "fPIC": [True, False]}
     default_options = {"shared": True, "fPIC": True}
 
-    exports_sources = "CMakeLists.txt", "src/*", "include/*"
+    exports_sources = "CMakeLists.txt", "src/*", "include/*", "control.def"
 
     def layout(self):
         cmake_layout(self)
@@ -36,6 +36,7 @@ class MyLibraryConan(ConanFile):
 
     def package_info(self):
         self.cpp_info.libs = ["control"]
+        self.cpp_info.includedirs = ["include"]
 
     def requirements(self):
         self.requires("flatbuffers/24.12.23")
