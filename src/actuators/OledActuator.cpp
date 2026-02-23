@@ -3,18 +3,8 @@
 #include "util/Variant.h"
 #include <cstring>
 
-double OledActuator::get_position() {
-    return 0.0;
-}
-
 std::string OledActuator::get_text() {
     return m_current_text;
-}
-
-void OledActuator::actuate(double /* position */) {
-}
-
-void OledActuator::actuate(double /* x */, double /* y */) {
 }
 
 void OledActuator::actuate(const std::string &text) {

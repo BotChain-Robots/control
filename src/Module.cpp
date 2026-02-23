@@ -41,3 +41,25 @@ void Module::update_module_metadata(const Messaging::TopologyMessage &message) {
         m_neighbours.emplace_back(neighbour{id, static_cast<Orientation>(ori)});
     }
 }
+
+double Module::get_position() {
+    // no-op
+    return 0;
+}
+
+std::string Module::get_text() {
+    // no-op
+    return "";
+}
+
+void Module::actuate(double /* position */) {
+    // no-op
+}
+
+void Module::actuate(double /* x */, double /* y */) {
+    // no-op
+}
+
+void Module::actuate(const std::string &text) {
+    // no-op
+}

@@ -19,10 +19,7 @@ class PositionalActuator1D final : public Actuator {
           m_acm_builder(std::make_unique<Flatbuffers::AngleControlMessageBuilder>()) {};
 
     double get_position() override;
-    std::string get_text() override; // no-op
     void actuate(double position) override;
-    void actuate(const std::string &text) override; // no-op
-    void actuate(double x, double y) override;      // no-op
 
     std::vector<uint8_t> get_actuation_message() override;
     void update_sensor_data(const Flatbuffers::sensor_value &value) override;

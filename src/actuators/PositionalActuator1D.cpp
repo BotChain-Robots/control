@@ -7,18 +7,8 @@ double PositionalActuator1D::get_position() {
     return m_current_position;
 }
 
-std::string PositionalActuator1D::get_text() {
-    return "";
-}
-
 void PositionalActuator1D::actuate(double position) {
     m_target_position = position;
-}
-
-void PositionalActuator1D::actuate(double /* x */, double /* y */) {
-}
-
-void PositionalActuator1D::actuate(const std::string &text) {
 }
 
 std::vector<uint8_t> PositionalActuator1D::get_actuation_message() {

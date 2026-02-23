@@ -19,10 +19,7 @@ class OledActuator : public Actuator {
           m_text_message_builder(std::make_unique<Flatbuffers::TextControlMessageBuilder>()) {
     }
 
-    double get_position() override;
     std::string get_text() override;
-    void actuate(double position) override;
-    void actuate(double x, double y) override; // no-op
     void actuate(const std::string &text) override;
 
     std::vector<uint8_t> get_actuation_message() override;

@@ -44,11 +44,11 @@ class Module {
     std::chrono::time_point<std::chrono::system_clock> get_last_updated_time();
 
     // Not all modules implement all actuation/sensor values, some are no-ops
-    virtual double get_position() = 0;
-    virtual std::string get_text() = 0;
-    virtual void actuate(double x) = 0;
-    virtual void actuate(const std::string &text) = 0;
-    virtual void actuate(double x, double y) = 0;
+    virtual double get_position();
+    virtual std::string get_text();
+    virtual void actuate(double x);
+    virtual void actuate(const std::string &text);
+    virtual void actuate(double x, double y);
 
     void update_module_metadata(const Messaging::TopologyMessage &message);
 

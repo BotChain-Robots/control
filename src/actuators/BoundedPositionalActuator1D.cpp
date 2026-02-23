@@ -10,22 +10,12 @@ double BoundedPositionalActuator1D::get_position() {
     return m_current_position;
 }
 
-std::string BoundedPositionalActuator1D::get_text() {
-    return "";
-}
-
 void BoundedPositionalActuator1D::actuate(double position) {
     if (position < m_min_value || position > m_max_value) {
         return;
     }
 
     m_target_position = position;
-}
-
-void BoundedPositionalActuator1D::actuate(double x, double y) {
-}
-
-void BoundedPositionalActuator1D::actuate(const std::string &text) {
 }
 
 std::vector<uint8_t> BoundedPositionalActuator1D::get_actuation_message() {
