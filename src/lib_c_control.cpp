@@ -30,7 +30,11 @@ LIB_API void cleanup() {
 LIB_API int send_angle_control(int module_id, int angle) {
     if (const auto maybe_module = robot_controller->getModule(module_id)) {
         const auto module = (*maybe_module).lock();
-        module->actuate(angle);
+        if (module) {
+            module->actuate(angle);
+        } else {
+            spdlog::warn("[c_control] send_angle_control: module {} has expired", module_id);
+        }
     }
     return 0;
 }

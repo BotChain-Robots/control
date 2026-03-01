@@ -35,11 +35,16 @@ using namespace std::chrono_literals;
 
 RobotController::~RobotController() {
     m_stop_thread = true;
-    m_metadata_loop.join();
-    m_transmit_loop.join();
-    m_configuration_loop.join();
-    m_sensor_loop.join();
-    m_expiry_looop.join();
+    if (m_metadata_loop.joinable())
+        m_metadata_loop.join();
+    if (m_transmit_loop.joinable())
+        m_transmit_loop.join();
+    if (m_configuration_loop.joinable())
+        m_configuration_loop.join();
+    if (m_sensor_loop.joinable())
+        m_sensor_loop.join();
+    if (m_expiry_looop.joinable())
+        m_expiry_looop.join();
 }
 
 std::vector<std::weak_ptr<Module>> RobotController::getModules() {
@@ -85,15 +90,17 @@ std::optional<std::weak_ptr<Module>> RobotController::getModule(uint8_t device_i
 void RobotController::resetModules() {
     std::unique_lock module_lock(m_module_lock);
     std::unique_lock conn_lock(m_connection_lock);
-    m_id_to_module.erase(m_id_to_module.begin(), m_id_to_module.end());
-    m_connection_map.erase(m_connection_map.begin(), m_connection_map.end());
+    m_id_to_module.clear();
+    m_connection_map.clear();
 }
 
 void RobotController::fetchDirectlyConnectedModules(bool block) {
     spdlog::info("[Control] Fetching modules from network");
-    auto t = std::thread([&] {
-        auto out = m_messaging_interface->find_connected_modules(
-            std::chrono::milliseconds(SCAN_DURATION_MS));
+    // Capture m_messaging_interface by value (shared_ptr) so the detached
+    // thread does not hold a dangling reference to 'this'.
+    auto messaging = m_messaging_interface;
+    auto t = std::thread([messaging] {
+        auto out = messaging->find_connected_modules(std::chrono::milliseconds(SCAN_DURATION_MS));
         spdlog::info("[Control] Found {} modules on the network", out.size());
     });
 
@@ -189,25 +196,21 @@ void RobotController::expiry_loop() {
             }
         }
 
-        // todo
-        // Remove connections
-        // for (auto it = m_connection_map.begin(); it != m_connection_map.end();) {
-        //     // Remove it->x connections
-        //     if (delete_modules.contains(it->first)) {
-        //         it = m_connection_map.erase(it);
-        //     } else {
-        //         ++it;
-        //     }
-
-        //     // Remove x->it connections
-        //     for (auto it2 = it->second.begin(); it2 != it->second.end();) {
-        //         if (delete_modules.contains(it2->to_module_id)) {
-        //             it2 = it->second.erase(it2);
-        //         } else {
-        //             ++it2;
-        //         }
-        //     }
-        // }
+        // Remove connections involving expired modules.
+        for (auto it = m_connection_map.begin(); it != m_connection_map.end();) {
+            if (delete_modules.contains(it->first)) {
+                it = m_connection_map.erase(it);
+            } else {
+                // Remove individual connections pointing to an expired module.
+                auto &conns = it->second;
+                conns.erase(std::remove_if(conns.begin(), conns.end(),
+                                           [&](const Flatbuffers::ModuleConnectionInstance &c) {
+                                               return delete_modules.contains(c.to_module_id);
+                                           }),
+                            conns.end());
+                ++it;
+            }
+        }
     }
 }
 
