@@ -28,7 +28,7 @@
 #define TOPOLOGY_BUFFER_SIZE 1024
 #define SENSOR_BUFFER_SIZE 1024
 #define NETWORK_CONFIG_FETCH_RATE 3s
-#define MODULE_EXPIRE_TIME 3s
+#define MODULE_EXPIRE_TIME 6s
 #define CONTROL_MESSAGE_FREQUENCY 50ms
 
 using namespace std::chrono_literals;
