@@ -59,11 +59,15 @@ std::vector<std::weak_ptr<Module>> RobotController::getModules() {
 
 std::vector<Flatbuffers::ModuleConnectionInstance> RobotController::getConnections() {
     std::vector<Flatbuffers::ModuleConnectionInstance> out;
-    std::shared_lock lock(m_connection_lock);
+    std::shared_lock module_lock(m_module_lock);
+    std::shared_lock conn_lock(m_connection_lock);
 
     for (auto const &[_, value] : m_connection_map) {
         for (const auto conn : value) {
-            out.push_back(conn);
+            if (m_id_to_module.contains(conn.from_module_id) &&
+                m_id_to_module.contains(conn.to_module_id)) {
+                out.push_back(conn);
+            }
         }
     }
     return out;
