@@ -17,6 +17,8 @@ extern "C" {
 LIB_API void init();
 LIB_API void cleanup();
 LIB_API int send_angle_control(int module_id, int angle);
+LIB_API int send_string_control(int module_id, const char *string);
+LIB_API double get_distance_control(int module_id);
 LIB_API char *get_configuration(int *size_out);
 
 LIB_API bool remote_call_c(uint8_t function_tag, uint8_t module, const uint8_t *params,

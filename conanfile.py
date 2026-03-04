@@ -7,7 +7,7 @@ from conan.tools.files import copy
 
 class MyLibraryConan(ConanFile):
     name = "libcontrol"
-    version = "1.0.2"
+    version = "1.0.3"
 
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "fPIC": [True, False]}
@@ -40,7 +40,7 @@ class MyLibraryConan(ConanFile):
 
     def requirements(self):
         self.requires("flatbuffers/24.12.23")
-        self.requires("librpc/1.1.7")
+        self.requires("librpc/1.1.8")
         self.requires("eigen/3.4.1")
         self.requires("spdlog/1.16.0")
         self.requires("sentry-native/0.12.2")

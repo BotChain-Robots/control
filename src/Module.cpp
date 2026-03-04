@@ -52,6 +52,11 @@ std::string Module::get_text() {
     return "";
 }
 
+double Module::get_distance() {
+    // no-op
+    return 0.0;
+}
+
 void Module::actuate(double /* position */) {
     // no-op
 }

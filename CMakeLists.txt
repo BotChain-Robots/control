@@ -16,6 +16,7 @@ find_package(crashpad REQUIRED)
 file(GLOB_RECURSE COMMON_SOURCES
         src/flatbuffers/*.cpp
         src/actuators/*.cpp
+        src/sensors/*.cpp
         src/Module.cpp
         src/Hub.cpp
         src/ModuleFactory.cpp

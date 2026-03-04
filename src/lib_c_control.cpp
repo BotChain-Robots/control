@@ -39,6 +39,30 @@ LIB_API int send_angle_control(int module_id, int angle) {
     return 0;
 }
 
+LIB_API int send_string_control(int module_id, const char *string) {
+    if (const auto maybe_module = robot_controller->getModule(module_id)) {
+        const auto module = (*maybe_module).lock();
+        if (module) {
+            module->actuate(std::string(string));
+        } else {
+            spdlog::warn("[c_control] send_angle_control: module {} has expired", module_id);
+        }
+    }
+    return 0;
+}
+
+LIB_API double get_distance_control(int module_id) {
+    if (const auto maybe_module = robot_controller->getModule(module_id)) {
+        const auto module = (*maybe_module).lock();
+        if (module) {
+            return module->get_distance();
+        } else {
+            spdlog::warn("[c_control] send_angle_control: module {} has expired", module_id);
+        }
+    }
+    return 0.0;
+}
+
 LIB_API char *get_configuration(int *size_out) {
     std::vector<Flatbuffers::ModuleInstance> modules_vec{};
     std::vector<Flatbuffers::ModuleConnectionInstance> connections_vec{};

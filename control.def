@@ -2,6 +2,8 @@ EXPORTS
 init
 cleanup
 send_angle_control
+send_string_control
+get_distance_control
 get_configuration
 control_sentry_init
 control_sentry_set_app_info

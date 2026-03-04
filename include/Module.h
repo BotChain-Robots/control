@@ -45,6 +45,7 @@ class Module {
 
     // Not all modules implement all actuation/sensor values, some are no-ops
     virtual double get_position();
+    virtual double get_distance();
     virtual std::string get_text();
     virtual void actuate(double x);
     virtual void actuate(const std::string &text);
@@ -53,6 +54,7 @@ class Module {
     void update_module_metadata(const Messaging::TopologyMessage &message);
 
     virtual std::vector<uint8_t> get_actuation_message() = 0;
+
     virtual void update_sensor_data(const Flatbuffers::sensor_value &value) = 0;
 
   private:

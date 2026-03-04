@@ -25,10 +25,9 @@ std::vector<uint8_t> OledActuator::get_actuation_message() {
 }
 
 void OledActuator::update_sensor_data(const Flatbuffers::sensor_value &value) {
-    std::visit(overloaded{
-                   [this](Flatbuffers::target_angle /* a */) {},
-                   [this](Flatbuffers::current_angle /* a */) {},
-                   [this](Flatbuffers::current_text t) { m_current_text = t.text; },
-               },
+    std::visit(overloaded{[this](Flatbuffers::target_angle /* a */) {},
+                          [this](Flatbuffers::current_angle /* a */) {},
+                          [this](Flatbuffers::current_text t) { m_current_text = t.text; },
+                          [this](Flatbuffers::distance /*d*/) {}},
                value);
 }

@@ -32,10 +32,9 @@ std::vector<uint8_t> BoundedPositionalActuator1D::get_actuation_message() {
 }
 
 void BoundedPositionalActuator1D::update_sensor_data(const Flatbuffers::sensor_value &value) {
-    std::visit(overloaded{
-                   [this](Flatbuffers::target_angle a) { m_current_position = a.angle; },
-                   [this](Flatbuffers::current_angle a) { m_current_position = a.angle; },
-                   [this](Flatbuffers::current_text /*t*/) {},
-               },
+    std::visit(overloaded{[this](Flatbuffers::target_angle a) { m_current_position = a.angle; },
+                          [this](Flatbuffers::current_angle a) { m_current_position = a.angle; },
+                          [this](Flatbuffers::current_text /*t*/) {},
+                          [this](Flatbuffers::distance /*d*/) {}},
                value);
 }

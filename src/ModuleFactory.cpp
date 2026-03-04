@@ -15,6 +15,13 @@ ModuleFactory::createModule(uint8_t device_id, ModuleType type,
                             std::shared_ptr<MessagingInterface> &messaging_interface) {
     switch (type) {
     case ModuleType_SPLITTER:
+    case ModuleType_SPLITTER_2:
+    case ModuleType_SPLITTER_3:
+    case ModuleType_SPLITTER_4:
+    case ModuleType_SPLITTER_5:
+    case ModuleType_SPLITTER_6:
+    case ModuleType_SPLITTER_7:
+    case ModuleType_SPLITTER_8:
         return std::make_shared<Hub>(device_id, type);
     case ModuleType_BATTERY:
         return std::make_shared<Hub>(device_id, type);

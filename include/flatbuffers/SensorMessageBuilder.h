@@ -24,7 +24,11 @@ struct current_text {
     std::string text;
 };
 
-typedef std::variant<target_angle, current_angle, current_text> sensor_value;
+struct distance {
+    float distance;
+};
+
+typedef std::variant<target_angle, current_angle, current_text, distance> sensor_value;
 
 class SensorMessageBuilder {
   public:
@@ -50,6 +54,10 @@ class SensorMessageBuilder {
             const Messaging::CurrentText *current =
                 static_cast<const Messaging::CurrentText *>(value);
             return current_text{current->value()->str()};
+        }
+        case Messaging::SensorValue_Distance: {
+            const Messaging::Distance *current = static_cast<const Messaging::Distance *>(value);
+            return distance{current->value()};
         }
         default:
             return std::nullopt;
