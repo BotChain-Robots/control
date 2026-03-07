@@ -9,40 +9,51 @@
 #include "libcontrol.h"
 #include "rpc/RemoteManagement.h"
 
+void progress_monitor_task(std::shared_ptr<RemoteManagement> rm, uint8_t module_id) {
+    while (true) {
+        std::this_thread::sleep_for(std::chrono::seconds(5));
+        std::cout << "Module " << (int)module_id << ": " << rm->ota_progress() * 100 << "% complete\n";
+        if (rm->ota_progress() >= 1.0) return;
+    }
+}
+
+void task(std::shared_ptr<RobotController> controller, uint8_t module_id, const std::string& filepath) {
+    auto rm = std::make_shared<RemoteManagement>(module_id, filepath, controller);
+    std::thread t(progress_monitor_task, rm, module_id);
+    rm->perform_ota();
+    t.join();
+    std::cout << "Done updating " << (int)module_id << "\n";
+}
+
 int main() {
-
-    // const auto messaging_interface = std::make_unique<MessagingInterface>();
-
-    // const auto modules = messaging_interface->find_connected_modules(std::chrono::seconds(3));
-
-    // std::cout << "Found " << modules.size() << " modules" << std::endl;
-
-    // for (const auto module : modules) {
-    //     std::cout << "Found ID " << (int)module << std::endl;
-    // }
-
     const auto robot_controller = std::make_shared<RobotController>();
     robot_controller->fetchDirectlyConnectedModules(true);
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
-    // const auto function_tag = 3;
-    // const auto module = 99;
-    // std::string msg = "Hello world!";
-    // std::vector<uint8_t> parameters(msg.begin(), msg.end());
-    // auto maybe_return_value = messaging_interface->remote_call(function_tag, module, parameters);
+    std::vector<uint8_t> to_update{};
+    for (const auto& maybe_module : robot_controller->getModules()) {
+        if (const auto &module = maybe_module.lock()) {
+            if (module->get_leader() != module->get_device_id()) { continue; }
+            std::cout << "Updating module " << (int)module->get_device_id();
+            to_update.emplace_back(module->get_device_id());
+        }
+    }
 
-    // if (maybe_return_value) {
-    //     auto return_value = std::move(*maybe_return_value);
-    //     std::cout << "Got return value " << (char *)return_value->data() << std::endl;
-    // } else {
-    //     std::cout << "Function call time out" << std::endl;
-    // }
-    //
+    if (to_update.size() < 1) {
+        std::cout << "No modules found to update" << std::endl;
+        return 0;
+    }
 
     std::string filename =
-        "/Users/jslightham/Documents/Classes/capstone/firmware/build/firmware.bin";
-    const auto rm = std::make_unique<RemoteManagement>(99, filename, robot_controller);
-    rm->perform_ota();
+            "/Users/jslightham/Documents/Classes/capstone/firmware/build/firmware.bin";
+    std::vector<std::thread> threads;
+    for (int i = 0; i < to_update.size(); i++) {
+        threads.emplace_back(task, robot_controller, to_update[i], filename);
+    }
+
+    for (auto &t : threads) {
+        t.join();
+    }
 
     return 0;
 }

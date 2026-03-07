@@ -23,6 +23,7 @@ bool RemoteManagement::perform_ota() {
     m_file.seekg(0, std::ios::end);
     std::streamsize total_size = m_file.tellg();
     m_file.seekg(0, std::ios::beg);
+    m_total_packets = total_size/OTA_CHUNK_SIZE;
     // std::cout << "Total number of chunks: " << total_size/OTA_CHUNK_SIZE << std::endl;
 
     while (m_file) {
@@ -95,4 +96,15 @@ bool RemoteManagement::ota_end() {
         return (*maybe)->at(0) > 0;
     }
     return false;
+}
+
+double RemoteManagement::ota_progress() {
+    if (m_total_packets < 1) {
+        return 0.0;
+    }
+    if (m_sequence_num >= m_total_packets) {
+        return 1.0;
+    }
+
+    return static_cast<double>(m_sequence_num) / static_cast<double>(m_total_packets);
 }

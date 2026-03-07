@@ -50,3 +50,5 @@ CMakeCache.txt
 /examples/display/build
 *.log
 /examples/rpc_call/build
+/examples/bandwidth/build
+/examples/servo/build

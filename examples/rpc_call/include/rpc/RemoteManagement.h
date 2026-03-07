@@ -1,3 +1,4 @@
+
 //
 // Created by Johnathon Slightham on 2026-02-16.
 //
@@ -21,6 +22,7 @@ class RemoteManagement {
           m_robot_controller(controller) {
     }
     bool perform_ota();
+    double ota_progress(); // 0 to 1 representing % progress.
     void restart();
 
   private:
@@ -29,6 +31,7 @@ class RemoteManagement {
     bool ota_end();
 
     uint16_t m_sequence_num = 0;
+    uint16_t m_total_packets = 0;
     uint8_t m_module_id;
     std::ifstream m_file;
     std::unique_ptr<Flatbuffers::OTAPacketBuilder> m_builder;
