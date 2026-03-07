@@ -5,6 +5,7 @@
 #include "actuators/OledActuator.h"
 #include "actuators/PositionalActuator1D.h"
 #include "flatbuffers_generated/RobotModule_generated.h"
+#include "sensors/DistanceSensor.h"
 
 #define SERVO1_MAX_ANGLE 180
 #define SERVO1_MIN_ANGLE 0
@@ -34,6 +35,8 @@ ModuleFactory::createModule(uint8_t device_id, ModuleType type,
         return std::make_shared<PositionalActuator1D>(device_id, type);
     case ModuleType_DISPLAY:
         return std::make_shared<OledActuator>(device_id, type);
+    case ModuleType_DISTANCE_SENSOR:
+        return std::make_shared<DistanceSensor>(device_id, type);
     default:
         return nullptr;
     }
