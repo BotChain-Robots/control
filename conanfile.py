@@ -40,7 +40,7 @@ class MyLibraryConan(ConanFile):
 
     def requirements(self):
         self.requires("flatbuffers/24.12.23")
-        self.requires("librpc/1.1.8")
+        self.requires("librpc/1.1.9")
         self.requires("eigen/3.4.1")
         self.requires("spdlog/1.16.0")
         self.requires("sentry-native/0.12.2")
