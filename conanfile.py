@@ -7,7 +7,7 @@ from conan.tools.files import copy
 
 class MyLibraryConan(ConanFile):
     name = "libcontrol"
-    version = "1.0.3"
+    version = "1.0.4"
 
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "fPIC": [True, False]}
