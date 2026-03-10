@@ -8,6 +8,7 @@
 #include <shared_mutex>
 #include <system_error>
 #include <thread>
+#include <unordered_set>
 
 #include "flatbuffers_generated/SensorMessage_generated.h"
 #include "spdlog/spdlog.h"
@@ -62,12 +63,37 @@ std::vector<Flatbuffers::ModuleConnectionInstance> RobotController::getConnectio
     std::shared_lock module_lock(m_module_lock);
     std::shared_lock conn_lock(m_connection_lock);
 
-    for (auto const &[_, value] : m_connection_map) {
-        for (const auto conn : value) {
-            if (m_id_to_module.contains(conn.from_module_id) &&
-                m_id_to_module.contains(conn.to_module_id)) {
-                out.push_back(conn);
+    for (auto const &[from_id, conns] : m_connection_map) {
+        for (const auto &conn : conns) {
+            if (!m_id_to_module.contains(conn.from_module_id) ||
+                !m_id_to_module.contains(conn.to_module_id)) {
+                continue;
             }
+
+            if (!m_connection_map.contains(conn.to_module_id)) {
+                continue;
+            }
+
+            uint8_t to_socket = 0;
+            bool found_inverse = false;
+            for (const auto &reverse_conn : m_connection_map.at(conn.to_module_id)) {
+                if (reverse_conn.to_module_id == conn.from_module_id) {
+                    to_socket = reverse_conn.from_socket;
+                    found_inverse = true;
+                    break;
+                }
+            }
+
+            if (!found_inverse) {
+                continue;
+            }
+
+            out.push_back(
+                Flatbuffers::ModuleConnectionInstance{.from_module_id = conn.from_module_id,
+                                                      .to_module_id = conn.to_module_id,
+                                                      .from_socket = conn.from_socket,
+                                                      .to_socket = to_socket,
+                                                      .orientation = conn.orientation});
         }
     }
     return out;
