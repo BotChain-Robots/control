@@ -71,29 +71,39 @@ std::vector<Flatbuffers::ModuleConnectionInstance> RobotController::getConnectio
             }
 
             if (!m_connection_map.contains(conn.to_module_id)) {
+                spdlog::warn("Could not find to module id in connection map {}", conn.to_module_id);
                 continue;
             }
 
             uint8_t to_socket = 0;
             bool found_inverse = false;
+            uint16_t orientation = conn.orientation;
             for (const auto &reverse_conn : m_connection_map.at(conn.to_module_id)) {
                 if (reverse_conn.to_module_id == conn.from_module_id) {
                     to_socket = reverse_conn.from_socket;
                     found_inverse = true;
+                    if (reverse_conn.orientation != Orientation_Deg0) {
+                        orientation = reverse_conn.orientation;
+                    }
                     break;
                 }
             }
 
             if (!found_inverse) {
+                spdlog::warn("Found inverse module, could not find inverse connection, {}",
+                             conn.to_module_id);
                 continue;
             }
+
+            spdlog::info("Adding module connection, {} to {}", conn.from_module_id,
+                         conn.to_module_id);
 
             out.push_back(
                 Flatbuffers::ModuleConnectionInstance{.from_module_id = conn.from_module_id,
                                                       .to_module_id = conn.to_module_id,
                                                       .from_socket = conn.from_socket,
                                                       .to_socket = to_socket,
-                                                      .orientation = conn.orientation});
+                                                      .orientation = (Orientation)orientation});
         }
     }
     return out;
@@ -168,7 +178,7 @@ void RobotController::metadata_loop() {
 
             std::unique_lock conn_lock(m_connection_lock);
             std::vector<Flatbuffers::ModuleConnectionInstance> conns;
-            for (uint8_t i = 1; i < NUM_CHANNELS; i++) {
+            for (uint8_t i = 0; i < NUM_CHANNELS; i++) {
                 if (metadata->channel_to_module()->Get(i) > 0) {
                     conns.push_back(Flatbuffers::ModuleConnectionInstance{
                         .from_module_id = metadata->module_id(),
