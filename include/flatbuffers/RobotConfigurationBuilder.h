@@ -15,6 +15,7 @@ struct ModuleInstance {
     uint8_t id;
     ModuleType type;
     int angle;
+    uint8_t leader;
 };
 
 struct ModuleConnectionInstance {

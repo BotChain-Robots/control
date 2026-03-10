@@ -113,7 +113,7 @@ std::vector<Flatbuffers::ModuleInstance> RobotController::getModuleList() {
     std::vector<Flatbuffers::ModuleInstance> out;
     std::shared_lock lock(m_module_lock);
     for (auto const &[key, value] : m_id_to_module) {
-        out.push_back({key, value->get_type()});
+        out.push_back({key, value->get_type(), value->get_leader()});
     }
     return out;
 }
@@ -201,6 +201,9 @@ void RobotController::transmit_loop() {
         std::this_thread::sleep_for(CONTROL_MESSAGE_FREQUENCY);
         std::shared_lock lock(m_module_lock);
         for (const auto [id, module] : m_id_to_module) {
+            if (m_selected_leader != module->get_leader()) {
+                continue;
+            }
             auto out = module->get_actuation_message();
 
             if (out.size() > 0) {
@@ -296,4 +299,28 @@ std::optional<std::unique_ptr<std::vector<uint8_t>>>
 RobotController::remote_call(uint8_t function_tag, uint8_t module,
                              const std::vector<uint8_t> &parameters) {
     return m_messaging_interface->remote_call(function_tag, module, parameters);
+}
+
+std::vector<uint8_t> RobotController::get_leaders() {
+    std::shared_lock lock(m_module_lock);
+    std::unordered_set<uint8_t> out{};
+
+    for (const auto m : map_to_values(m_id_to_module)) {
+        out.insert(m->get_leader());
+    }
+
+    return {out.begin(), out.end()};
+}
+
+bool RobotController::select_leader(uint8_t leader_id) {
+    std::shared_lock lock(m_module_lock);
+    if (m_id_to_module.contains(leader_id)) {
+        m_selected_leader = leader_id;
+        return true;
+    }
+    return false;
+}
+
+uint8_t RobotController::get_selected_leader() {
+    return m_selected_leader;
 }

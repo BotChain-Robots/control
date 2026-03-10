@@ -63,15 +63,27 @@ LIB_API double get_distance_control(int module_id) {
     return 0.0;
 }
 
-LIB_API char *get_configuration(int *size_out) {
+LIB_API char *get_configuration(int *size_out, int leader_id) {
     std::vector<Flatbuffers::ModuleInstance> modules_vec{};
     std::vector<Flatbuffers::ModuleConnectionInstance> connections_vec{};
+    std::unordered_set<uint8_t> modules_send{};
+
+    robot_controller->select_leader(leader_id);
 
     for (const auto &module : robot_controller->getModuleList()) {
+        if (robot_controller->get_selected_leader() != module.leader) {
+            continue;
+        }
         modules_vec.emplace_back(module);
+        modules_send.emplace(module.id);
     }
 
     for (const auto &connection : robot_controller->getConnections()) {
+        if (!modules_send.contains(connection.from_module_id) ||
+            !modules_send.contains(connection.to_module_id)) {
+            continue;
+        }
+
         connections_vec.emplace_back(connection);
     }
 
@@ -155,4 +167,10 @@ LIB_API bool remote_call_c(uint8_t function_tag, uint8_t module, const uint8_t *
     memcpy(out_buffer, out.data(), needed);
 
     return true;
+}
+
+LIB_API const uint8_t *get_leaders(int *length) {
+    static const auto leaders = robot_controller->get_leaders();
+    *length = leaders.size();
+    return leaders.data();
 }
