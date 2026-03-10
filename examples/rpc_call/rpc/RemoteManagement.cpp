@@ -23,7 +23,7 @@ bool RemoteManagement::perform_ota() {
     m_file.seekg(0, std::ios::end);
     std::streamsize total_size = m_file.tellg();
     m_file.seekg(0, std::ios::beg);
-    m_total_packets = total_size/OTA_CHUNK_SIZE;
+    m_total_packets = total_size / OTA_CHUNK_SIZE;
     // std::cout << "Total number of chunks: " << total_size/OTA_CHUNK_SIZE << std::endl;
 
     while (m_file) {
@@ -62,11 +62,15 @@ void RemoteManagement::restart() {
 
 bool RemoteManagement::start_ota() {
     // std::cout << "Starting OTA" << std::endl;
-    const auto maybe = m_robot_controller->remote_call(4, m_module_id, {});
-    if (maybe) {
-        // std::cout << "Got valid response" << std::endl;
-        m_sequence_num = 1;
-        return (*maybe)->at(0) > 0;
+    int attempts = 0;
+    while (attempts < MAX_PACKET_TX_ATTEMPTS) {
+        const auto maybe = m_robot_controller->remote_call(4, m_module_id, {});
+        if (maybe) {
+            // std::cout << "Got valid response" << std::endl;
+            m_sequence_num = 1;
+            return (*maybe)->at(0) > 0;
+        }
+        attempts++;
     }
     return false;
 }
