@@ -93,6 +93,9 @@ class RobotController {
    */
     void resetModules();
 
+    bool select_leader(uint8_t leader_id);
+    std::vector<uint8_t> get_leaders();
+
     /**
    * \brief Poll for devices accessible to the PC.
    *
@@ -102,6 +105,8 @@ class RobotController {
 
     std::optional<std::unique_ptr<std::vector<uint8_t>>>
     remote_call(uint8_t function_tag, uint8_t module, const std::vector<uint8_t> &parameters);
+
+    uint8_t get_selected_leader();
 
   private:
     std::shared_ptr<spdlog::logger> m_logger;
@@ -118,6 +123,7 @@ class RobotController {
     std::thread m_configuration_loop;
     std::thread m_sensor_loop;
     std::thread m_expiry_looop;
+    std::atomic<uint8_t> m_selected_leader{0};
 
     void metadata_loop();
     void transmit_loop();

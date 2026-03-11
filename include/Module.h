@@ -61,7 +61,7 @@ class Module {
     uint8_t m_device_id;
     ModuleType m_module_type;
     Messaging::ConnectionType m_connection_type;
-    uint8_t m_leader;
+    std::atomic<uint8_t> m_leader{0};
     std::chrono::time_point<std::chrono::system_clock> m_last_updated;
     std::vector<neighbour> m_neighbours;
     std::shared_ptr<MessagingInterface> m_messaging_interface;

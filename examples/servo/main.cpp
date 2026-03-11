@@ -24,17 +24,20 @@ int main() {
         std::cout << "Found " << controller->getModules().size() << " modules" << std::endl;
         for (const auto &maybe_module : controller->getModules()) {
             if (const auto &module = maybe_module.lock()) {
-                if (module->get_type() == ModuleType_DC_MOTOR) {
+                if (module->get_type() == ModuleType_SERVO_2 ||
+                    module->get_type() == ModuleType_SERVO_1) {
+                    std::cout << "Actuating " << (int)module->get_device_id() << " leader "
+                              << (int)module->get_leader() << std::endl;
                     int randomNumber = dist(gen);
                     if (module->get_position() > 90) {
-                        module->actuate(70 - randomNumber);
+                        module->actuate(50 - randomNumber);
                     } else {
-                        module->actuate(110 + randomNumber);
+                        module->actuate(150 + randomNumber);
                     }
+                    std::this_thread::sleep_for(std::chrono::milliseconds(250));
                 }
             }
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
     return 0;

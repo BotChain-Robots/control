@@ -16,7 +16,7 @@ class PositionalActuator1D final : public Actuator {
   public:
     PositionalActuator1D(uint8_t device_id, ModuleType type)
         : Actuator(device_id, type),
-          m_acm_builder(std::make_unique<Flatbuffers::AngleControlMessageBuilder>()) {};
+          m_acm_builder(std::make_unique<Flatbuffers::AngleControlMessageBuilder>()){};
 
     double get_position() override;
     void actuate(double position) override;
