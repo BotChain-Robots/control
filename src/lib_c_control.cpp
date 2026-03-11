@@ -170,7 +170,9 @@ LIB_API bool remote_call_c(uint8_t function_tag, uint8_t module, const uint8_t *
 }
 
 LIB_API const uint8_t *get_leaders(int *length) {
-    static const auto leaders = robot_controller->get_leaders();
+    static std::vector<uint8_t> leaders;
+    leaders = robot_controller->get_leaders();
     *length = leaders.size();
+    spdlog::info("Returning {} leaders", *length);
     return leaders.data();
 }

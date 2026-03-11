@@ -113,7 +113,7 @@ std::vector<Flatbuffers::ModuleInstance> RobotController::getModuleList() {
     std::vector<Flatbuffers::ModuleInstance> out;
     std::shared_lock lock(m_module_lock);
     for (auto const &[key, value] : m_id_to_module) {
-        out.push_back({key, value->get_type(), value->get_leader()});
+        out.push_back({key, value->get_type(), 0, value->get_leader()});
     }
     return out;
 }
@@ -305,6 +305,7 @@ std::vector<uint8_t> RobotController::get_leaders() {
     std::shared_lock lock(m_module_lock);
     std::unordered_set<uint8_t> out{};
 
+    spdlog::info("number of modules {}", m_id_to_module.size());
     for (const auto m : map_to_values(m_id_to_module)) {
         out.insert(m->get_leader());
     }

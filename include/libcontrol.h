@@ -123,7 +123,7 @@ class RobotController {
     std::thread m_configuration_loop;
     std::thread m_sensor_loop;
     std::thread m_expiry_looop;
-    uint8_t m_selected_leader = 0;
+    std::atomic<uint8_t> m_selected_leader{0};
 
     void metadata_loop();
     void transmit_loop();
