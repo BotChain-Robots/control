@@ -79,7 +79,8 @@ std::vector<Flatbuffers::ModuleConnectionInstance> RobotController::getConnectio
             bool found_inverse = false;
             uint16_t orientation = conn.orientation;
             for (const auto &reverse_conn : m_connection_map.at(conn.to_module_id)) {
-                if (reverse_conn.to_module_id == conn.from_module_id) {
+                if (reverse_conn.to_module_id == conn.from_module_id &&
+                    reverse_conn.from_socket == conn.to_socket) {
                     to_socket = reverse_conn.from_socket;
                     found_inverse = true;
                     if (reverse_conn.orientation != Orientation_Deg0) {
